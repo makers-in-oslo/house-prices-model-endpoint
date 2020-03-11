@@ -23,7 +23,6 @@ def convert_data(json_raw):
         raise WrongInput(
             "Payload should be json with all house-price headers except 'price' as keys"
         )
-    pass
 
 
 # routes
@@ -33,7 +32,7 @@ def predict():
     converted_data = convert_data(json_row)
     # prediction = MODEL.predict(converted_data)[0]
     print(converted_data)
-    return str(1)  ##jsonify(converted_data.to_json())  # str(prediction)
+    return jsonify(converted_data.to_json())  # str(prediction)
 
 
 @app.errorhandler(WrongInput)
