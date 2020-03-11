@@ -1,5 +1,5 @@
 import pandas as pd
-from flask import Flask, jsonify, request, url_for
+from flask import Flask, jsonify, request
 import requests
 import pickle
 import json
@@ -21,7 +21,7 @@ def convert_data(json_raw):
         return sample
     except:
         raise WrongInput(
-            "Payload should be json with all titanic headers except" " survived as keys"
+            "Payload should be json with all house-price headers except 'price' as keys"
         )
     pass
 
@@ -31,6 +31,17 @@ def convert_data(json_raw):
 def predict():
     json_row = request.get_json()
     converted_data = convert_data(json_row)
+    # prediction = MODEL.predict(converted_data)[0]
+    print(converted_data)
+    return jsonify(converted_data.to_json())  # str(prediction)
 
-    prediction = MODEL.predict(converted_data)[0]
-    return str(prediction)  # , response_shap_api
+
+@app.errorhandler(WrongInput)
+def handle_invalid_usage(error):
+    response = jsonify(error.to_dict())
+    response.status_code = error.status_code
+    return response
+
+
+if __name__ == "__main__":
+    app.run(port=5000, debug=True)
