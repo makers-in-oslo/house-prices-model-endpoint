@@ -33,7 +33,7 @@ def predict():
     converted_data = convert_data(json_row)
     # prediction = MODEL.predict(converted_data)[0]
     print(converted_data)
-    return jsonify(converted_data.to_json())  # str(prediction)
+    return str(1)  ##jsonify(converted_data.to_json())  # str(prediction)
 
 
 @app.errorhandler(WrongInput)
