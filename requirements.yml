@@ -7,6 +7,6 @@ dependencies:
   - gunicorn
   - python=3.7
   - flask
-  - pandas
+  - pandas<1
   - scikit-learn=0.22.1
   - xgboost
