@@ -21,7 +21,7 @@ def convert_data(json_raw):
         return sample
     except:
         raise WrongInput(
-            "Payload should be json with all house-price headers except 'price' as keys"
+            "Payload should be JSON with all house-price headers except 'price' as keys"
         )
 
 
