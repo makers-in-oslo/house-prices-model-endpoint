@@ -3,7 +3,24 @@ from flask import Flask, jsonify, request
 import pickle
 import json
 from src.errors import WrongInput
+import boto3
+import os
 
+
+model_name_d = "tmp_model_d.pkl"
+s3 = boto3.client(
+    "s3",
+    aws_access_key_id=os.environ["ACCESS_KEY"],
+    aws_secret_access_key=os.environ["SECRET_KEY"],
+)
+s3.download_file(
+    Bucket="ds-lett",
+    Key="house-prices/models/model_d.pkl",
+    Filename="./models/" + model_name_d,
+)
+
+with open("models/" + model_name_d, "rb") as f:
+    MODEL_DANIEL = pickle.load(f)
 
 # with open("models/SOMENAME.pkl", "rb") as f:
 #    MODEL = pickle.load(f)
