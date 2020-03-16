@@ -11,28 +11,33 @@ from src.errors import WrongInput
 
 app = Flask(__name__)
 
+with open("models/model_bkm.pkl", "rb") as f:
+    MODEL_BJORNAR = pickle.load(f)
+
 
 def convert_data(json_raw):
     """
     Some function to maybe do some data wrangeling with the json file
     """
-    try:
-        sample = pd.DataFrame(json_raw, index=[0]).rename(columns=str.lower)
-        return sample
-    except:
-        raise WrongInput(
-            "Payload should be json with all house-price headers except 'price' as keys"
-        )
+    sample = pd.DataFrame(json_raw, index=[0]).rename(columns=str.lower)
+    return sample
 
 
 # routes
 @app.route("/", methods=["POST"])
 def predict():
-    json_row = request.get_json()
-    converted_data = convert_data(json_row)
-    # prediction = MODEL.predict(converted_data)[0]
-    print(converted_data)
-    return jsonify(converted_data.to_json())  # str(prediction)
+    try:
+        json_row = request.get_json()
+        print("json: {json_row}")
+        converted_data = convert_data(json_row)
+        print("pandas: {converted_data}")
+        prediction = MODEL_BJORNAR.predict(converted_data)[0]
+        print("prediction: {prediction}")
+        return str(prediction)
+    except:
+        raise WrongInput(
+            "Payload should be JSON with all house-price headers except 'price' as keys"
+        )
 
 
 @app.errorhandler(WrongInput)
