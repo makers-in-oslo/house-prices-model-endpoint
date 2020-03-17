@@ -6,6 +6,8 @@ from src.errors import WrongInput
 import os
 from src.funcs import stream_pickle
 
+app = Flask(__name__)
+
 model_name_d = "model_d.pkl"
 
 
@@ -15,9 +17,6 @@ MODEL_DANIEL = stream_pickle(
     "ds-lett",
     "house-prices/models/" + model_name_d,
 )
-
-
-app = Flask(__name__)
 
 with open("models/model_bkm.pkl", "rb") as f:
     MODEL_BJORNAR = pickle.load(f)
