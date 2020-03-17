@@ -7,15 +7,21 @@ import os
 from src.funcs import stream_pickle
 
 model_name_d = "model_d.pkl"
+model_name_b = "model_b.pkl"
 
-
-MODEL_DANIEL = stream_pickle(
+MODEL_D = stream_pickle(
     os.environ["ACCESS_KEY"],
     os.environ["SECRET_KEY"],
     "ds-lett",
     "house-prices/models/" + model_name_d,
 )
 
+MODEL_B = stream_pickle(
+    os.environ["ACCESS_KEY"],
+    os.environ["SECRET_KEY"],
+    "ds-lett",
+    "house-prices/models/" + model_name_b,
+)
 
 app = Flask(__name__)
 
@@ -49,7 +55,23 @@ def predict_daniel():
         # print(f"json: {json_row}")
         converted_data = convert_data(json_row)
         # print(f"pandas: {converted_data}")
-        prediction = MODEL_DANIEL.predict(converted_data)[0]
+        prediction = MODEL_D.predict(converted_data)[0]
+        # print(f"prediction: {prediction}")
+        return str(prediction)
+    except:
+        raise WrongInput(
+            "Payload should be JSON with all house-price headers except 'price' as keys"
+        )
+
+
+@app.route("/bjornar", methods=["POST"])
+def predict_bjornar():
+    try:
+        json_row = request.get_json()
+        # print(f"json: {json_row}")
+        converted_data = convert_data(json_row)
+        # print(f"pandas: {converted_data}")
+        prediction = MODEL_B.predict(converted_data)[0]
         # print(f"prediction: {prediction}")
         return str(prediction)
     except:
