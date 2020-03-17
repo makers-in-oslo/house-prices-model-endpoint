@@ -11,8 +11,8 @@ from src.errors import WrongInput
 app = Flask(__name__)
 
 
-# with open("models/model.pkl", "rb") as f:
-#    MODEL_DANIEL = pickle.load(f)
+with open("models/model.pkl", "rb") as f:
+    MODEL_DANIEL = pickle.load(f)
 
 with open("models/model_bkm.pkl", "rb") as f:
     MODEL_BJORNAR = pickle.load(f)
