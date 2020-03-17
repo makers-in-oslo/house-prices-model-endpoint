@@ -9,6 +9,7 @@ from src.funcs import stream_pickle
 app = Flask(__name__)
 
 model_name_d = "model_d.pkl"
+model_name_b = "model_b.pkl"
 
 
 MODEL_DANIEL = stream_pickle(
@@ -18,8 +19,15 @@ MODEL_DANIEL = stream_pickle(
     "house-prices/models/" + model_name_d,
 )
 
-with open("models/model_bkm.pkl", "rb") as f:
-    MODEL_BJORNAR = pickle.load(f)
+MODEL_BJORNAR = stream_pickle(
+    os.environ["ACCESS_KEY"],
+    os.environ["SECRET_KEY"],
+    "ds-lett",
+    "house-prices/models/" + model_name_b,
+)
+
+# with open("models/model_bkm.pkl", "rb") as f:
+#    MODEL_BJORNAR = pickle.load(f)
 
 
 def convert_data(json_raw):
