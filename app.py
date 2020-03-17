@@ -3,33 +3,21 @@ from flask import Flask, jsonify, request
 import pickle
 import json
 from src.errors import WrongInput
-import boto3
 import os
+from src.funcs import stream_pickle
+
+model_name_d = "model_d.pkl"
 
 
-model_name_d = "tmp_model_d.pkl"
-s3 = boto3.client(
-    "s3",
-    aws_access_key_id=os.environ["ACCESS_KEY"],
-    aws_secret_access_key=os.environ["SECRET_KEY"],
-)
-s3.download_file(
-    Bucket="ds-lett",
-    Key="house-prices/models/model_d.pkl",
-    Filename="./models/" + model_name_d,
+MODEL_DANIEL = stream_pickle(
+    os.environ["ACCESS_KEY"],
+    os.environ["SECRET_KEY"],
+    "ds-lett",
+    "house-prices/models/" + model_name_d,
 )
 
-with open("models/" + model_name_d, "rb") as f:
-    MODEL_DANIEL = pickle.load(f)
-
-# with open("models/SOMENAME.pkl", "rb") as f:
-#    MODEL = pickle.load(f)
 
 app = Flask(__name__)
-
-
-"""with open("models/model.pkl", "rb") as f:
-    MODEL_DANIEL = pickle.load(f)"""
 
 
 def convert_data(json_raw):
@@ -58,11 +46,11 @@ def to_row():
 def predict_daniel():
     try:
         json_row = request.get_json()
-        print(f"json: {json_row}")
+        # print(f"json: {json_row}")
         converted_data = convert_data(json_row)
-        print(f"pandas: {converted_data}")
+        # print(f"pandas: {converted_data}")
         prediction = MODEL_DANIEL.predict(converted_data)[0]
-        print(f"prediction: {prediction}")
+        # print(f"prediction: {prediction}")
         return str(prediction)
     except:
         raise WrongInput(
