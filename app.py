@@ -28,8 +28,8 @@ with open("models/" + model_name_d, "rb") as f:
 app = Flask(__name__)
 
 
-with open("models/model.pkl", "rb") as f:
-    MODEL_DANIEL = pickle.load(f)
+"""with open("models/model.pkl", "rb") as f:
+    MODEL_DANIEL = pickle.load(f)"""
 
 
 def convert_data(json_raw):
