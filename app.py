@@ -3,16 +3,21 @@ from flask import Flask, jsonify, request
 import pickle
 import json
 from src.errors import WrongInput
+import os
+from src.funcs import stream_pickle
+
+model_name_d = "model_d.pkl"
 
 
-# with open("models/SOMENAME.pkl", "rb") as f:
-#    MODEL = pickle.load(f)
+MODEL_DANIEL = stream_pickle(
+    os.environ["ACCESS_KEY"],
+    os.environ["SECRET_KEY"],
+    "ds-lett",
+    "house-prices/models/" + model_name_d,
+)
+
 
 app = Flask(__name__)
-
-
-with open("models/model.pkl", "rb") as f:
-    MODEL_DANIEL = pickle.load(f)
 
 with open("models/model_bkm.pkl", "rb") as f:
     MODEL_BJORNAR = pickle.load(f)
@@ -44,11 +49,11 @@ def to_row():
 def predict_daniel():
     try:
         json_row = request.get_json()
-        print(f"json: {json_row}")
+        # print(f"json: {json_row}")
         converted_data = convert_data(json_row)
-        print(f"pandas: {converted_data}")
+        # print(f"pandas: {converted_data}")
         prediction = MODEL_DANIEL.predict(converted_data)[0]
-        print(f"prediction: {prediction}")
+        # print(f"prediction: {prediction}")
         return str(prediction)
     except:
         raise WrongInput(
