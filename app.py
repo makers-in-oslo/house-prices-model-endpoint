@@ -72,11 +72,11 @@ def predict_daniel():
 def predict_bjornar():
     try:
         json_row = request.get_json()
-        print(f"json: {json_row}")
+        # print(f"json: {json_row}")
         converted_data = convert_data(json_row)
-        print(f"pandas: {converted_data}")
+        # print(f"pandas: {converted_data}")
         prediction = MODEL_BJORNAR.predict(converted_data)[0]
-        print(f"prediction: {prediction}")
+        # print(f"prediction: {prediction}")
         return str(prediction)
     except:
         raise WrongInput(
