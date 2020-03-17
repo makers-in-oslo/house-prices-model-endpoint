@@ -10,5 +10,6 @@ dependencies:
   - pandas<1
   - scikit-learn=0.22.1
   - pip
+  - boto3
   - pip:
-    - xgboost
+      - xgboost
