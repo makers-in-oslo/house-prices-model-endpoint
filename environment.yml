@@ -1,0 +1,14 @@
+# This enviroment is for development
+name: hp-ml-endpoint
+channels:
+  - default
+  - conda-forge
+dependencies:
+  - black
+  - python=3.7
+  - flask
+  - pandas
+  - scikit-learn=0.22.1
+  - jupyterlab
+  - xgboost
+  - boto3
