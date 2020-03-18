@@ -1,7 +1,8 @@
-import _pickle as cPickle
+import pickle
 import boto3
 
-def stream_pickle(aws_access_key_id,aws_secret_access_key,Bucket,Key):
+
+def stream_pickle(aws_access_key_id, aws_secret_access_key, Bucket, Key):
     """
     stream pickle object from AWS S3 so that the object is not stored temporary on disk
     
@@ -21,7 +22,11 @@ def stream_pickle(aws_access_key_id,aws_secret_access_key,Bucket,Key):
     Depends on the stored object
     """
     session = boto3.session.Session()
-    s3client = session.client("s3", aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
+    s3client = session.client(
+        "s3",
+        aws_access_key_id=aws_access_key_id,
+        aws_secret_access_key=aws_secret_access_key,
+    )
     response = s3client.get_object(Bucket=Bucket, Key=Key)
-    body_string = response['Body'].read()
-    return cPickle.loads(body_string)
+    body_string = response["Body"].read()
+    return pickle.loads(body_string)
